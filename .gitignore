@@ -1,0 +1,8 @@
+__pycache__
+.vscode
+
+.env
+.coverage
+.idea/
+
+.DS_Store

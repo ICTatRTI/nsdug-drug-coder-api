@@ -1,0 +1,46 @@
+{% extends 'base.html' %} {% block title %} Demo Interface {% endblock %} {% block content %}
+<div id="app">
+  <div class="row">
+    <div class="col s6 offset-s3 card-panel">
+      <h5>Drug Input</h5>
+      <p>Input both a drug response section and text.</p>
+      <div class="input-field col s6">
+        <p>
+          <input id="last_name" type="text" v-model="drugSection">
+          <label for="last_name">Drug Section</label>
+        </p>
+      </div>
+      <div class="input-field col s6">
+        <p>
+          <input id="last_name" type="text" v-model="drugText">
+          <label for="last_name">Drug Text</label>
+        </p>
+      </div>
+    </div>
+  </div>
+  <transition name="fade">
+    <table v-if="predictions instanceof Array" class="striped" key="present">
+      <thead>
+        <th>Rank</th>
+        <th style="min-width:100px">SC Code</th>
+        <th>Probability</th>
+        <th>Definition</th>
+      </thead>
+      <tbody>
+        <tr v-for="pred in predictions">
+          <td>{{ pred.p_rank }}</td>
+          <td style="min-width:100px">
+            <code>{{ pred.sc_code }}</code>
+          </td>
+          <td>{{ (pred.p).toFixed(2) }}</td>
+          <td>{{ pred.code_definition }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div v-else key="absent" class="row">
+      <p class="col s3 offset-s3">{{ predictions }}</p>
+    </div>
+  </transition>
+</div>
+<script type="text/javascript" src="%% url_for('static', filename='interface.js') %%">
+</script> {% endblock %}

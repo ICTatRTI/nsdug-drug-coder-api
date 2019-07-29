@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}
+API 
+{% endblock %}
+{% block content %}
+<h3>API</h3>
+<p>The API accepts post requests at <code>/drug-predict/</code>. You should submit a <code>drug_section</code> and <code>drug_text</code>.</p>
+<p>An example <code>curl</code> request is:</p>
+<p><code>$ curl -d '{"drug_section":"SD15", "drug_text":"heroin"}' -H "Content-Type: application/json" -X POST http://localhost:23432/drug-predict/</code></p>
+<h4>Response Format</h4>
+<pre>{
+    "description" : "This description",
+
+    "info" : {
+        "structure" : {
+            "warning" : "A warning if the maximum prediction is under 0.4, demonstrating model uncertainty",
+            "time_elapsed" : "time it took to calculate prediction and build response"
+        }
+    },
+    "predictions" : {
+        "description" : "Array of predicted codes in descending order of probability, each with structure below",
+        "structure" : {
+            "sc_code": "predicted SC drug code",
+            "code_id": "ID of code for lookup. Can be ignored. For internal documentation",
+            "code_definition": "Definition of Code from documentation",
+            "p": "predicted probability of code given course number and course title",
+            "p_rank" : "Rank of prediction (1 is most likely)"
+        }
+    }
+    "submitted_data" :{
+        "structure" : {
+            "drug_section" : "The drug response section submitted",
+            "drug_title" : "The drug response text submitted",
+            "prediction_count" : "Optional. The number of predictions to return (default=10)"
+        }
+    },
+}
+</pre>
+    {% endblock %}
