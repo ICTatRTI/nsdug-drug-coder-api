@@ -16,7 +16,7 @@ class CustomFlask(Flask):
     ))
 
 
-app = CustomFlask(__name__) 
+app = CustomFlask(__name__)
 
 @app.route('/')
 def index():
@@ -40,7 +40,7 @@ def course_predict():
         request_data = request.get_json()
     else:
         request_type = "form"
-        request_data = request.form 
+        request_data = request.form
 
     no_drug_type = not 'drug_section' in request_data
     no_drug_text = not 'drug_text' in request_data
@@ -87,7 +87,7 @@ def course_predict():
         warning = "Max prediction less than 0.4, model is uncertain about this course prediction"
 
     time_elapsed = time() - start_time
- 
+
     info = {
         'warning' : warning,
         'time_elapsed' : str(round(time_elapsed, 2)) + ' s',

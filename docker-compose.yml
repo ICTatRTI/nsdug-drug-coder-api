@@ -1,0 +1,10 @@
+version: "3.7"
+services:
+  api:
+    build: .
+    restart: always
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./:/app/
+    command: [ "--log-level=DEBUG", "--enable-stdio-inheritance", "--reload" ]
