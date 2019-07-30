@@ -1,19 +1,31 @@
-{% extends 'base.html' %} {% block title %} Demo Interface {% endblock %} {% block content %}
+{% extends 'base.html' %}{% block title %}NSDUH{% endblock %}{% block content %}
 <div id="app">
   <div class="row">
     <div class="col s6 offset-s3 card-panel">
       <h5>Drug Input</h5>
-      <p>Input both a drug response section and text.</p>
+      <p>Input a drug name and select a section.</p>
       <div class="input-field col s6">
         <p>
-          <input id="last_name" type="text" v-model="drugSection">
-          <label for="last_name">Drug Section</label>
+          <label for="drug-text">Drug Text</label>
+          <input id="drug-text" type="text" v-model="drugText">
         </p>
       </div>
       <div class="input-field col s6">
         <p>
-          <input id="last_name" type="text" v-model="drugText">
-          <label for="last_name">Drug Text</label>
+          <label for="drug-section">Drug Section</label>
+          <select id="drug-section" v-model="drugSection">
+            <option value="" disabled default>Please Select A Section</option>
+            <option value="IN01">Other Inhalant</option>
+            <option value="LS01">Other Hallucinogen</option>
+            <option value="PRYOT">Other Pain Reliever</option>
+            <option value="STYOT">Other Stimulant</option>
+            <option value="SVYOT">Other Sedative</option>
+            <option value="TRYOT">Other Tranquilizer</option>
+            <option value="SD02">Other Cough/Cold Medicine</option>
+            <option value="SD15">Other Injected Drug</option>
+            <option value="TX21">Other Drug Needed Treatment For</option>
+            <option value="TX26">Drug Received Treatment For</option>
+          </select>
         </p>
       </div>
     </div>

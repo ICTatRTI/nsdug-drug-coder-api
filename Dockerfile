@@ -15,4 +15,4 @@ RUN pip install -r requirements.txt
 
 COPY . /app
 EXPOSE 8080
-CMD ["/opt/conda/envs/drug-name-coder-api/bin/gunicorn", "app:app", "-b", "0.0.0.0:8080"]
+ENTRYPOINT ["/opt/conda/envs/drug-name-coder-api/bin/gunicorn", "app:app", "-b", "0.0.0.0:8080"]

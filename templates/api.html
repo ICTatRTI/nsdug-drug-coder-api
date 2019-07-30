@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 {% block title %}
-API 
+API
 {% endblock %}
 {% block content %}
 <h3>API</h3>
 <p>The API accepts post requests at <code>/drug-predict/</code>. You should submit a <code>drug_section</code> and <code>drug_text</code>.</p>
-<p>An example <code>curl</code> request is:</p>
-<p><code>$ curl -d '{"drug_section":"SD15", "drug_text":"heroin"}' -H "Content-Type: application/json" -X POST http://localhost:23432/drug-predict/</code></p>
+<p>An example <code>curl</code> request when running locally is:</p>
+<p><code>$ curl -d '{"drug_section":"SD15", "drug_text":"heroin"}' -H "Content-Type: application/json" -X POST http://localhost:8080/drug-predict/</code></p>
 <h4>Response Format</h4>
 <pre>{
     "description" : "This description",
