@@ -6,6 +6,7 @@ from flask_cors import cross_origin
 DRUG_SECTIONS = ["IN01", "LS01", "PYROT", "STYOT", "SVYOT", "TRYOT", "SD02", "SD15", "TX21", "TX36"]
 
 # Load model into memory
+
 model = load_model()
 
 class CustomFlask(Flask):
@@ -57,10 +58,14 @@ def course_predict():
     drug_section = request_data['drug_section']
     drug_text = request_data['drug_text']
 
+    # NOTE: We need to be able to handle the case where TX21 and TX36 (or other combinations of inputs) are specified.
+    drug_section = drug_section.split(',')
+
     # Make sure drug section is an actual drug section
-    if drug_section not in DRUG_SECTIONS:
-        bad_request_response = {'error': 'Drug section must be one of the following: {0}'.format(", ".join(DRUG_SECTIONS))}
-        return jsonify(bad_request_response)
+    for section in drug_section:
+        if section not in DRUG_SECTIONS:
+            bad_request_response = {'error': 'Drug section must be one of the following: {0}'.format(", ".join(DRUG_SECTIONS))}
+            return jsonify(bad_request_response)
 
     processed_input = x_input(drug_section, drug_text)
     tokenized_input = text_processor.process([processed_input])

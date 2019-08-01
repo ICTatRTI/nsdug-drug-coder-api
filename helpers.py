@@ -92,9 +92,10 @@ class TextProcessor(object):
 
 text_processor = TextProcessor(tokenizer, token_index, ngram_range=ngram_range, maxlen=maxlen)
 
-def x_input(section, text):
-    if section is not None:
-        return ' '.join((str(section).upper(), str(text).lower()))
+def x_input(sections, text):
+    if sections is not None:
+        formatted_input = ' '.join([str(section).upper() for section in sections])
+        return ' '.join([formatted_input, str(text).lower()])
     return str(text).lower()
 
 def top_n_probabilities(probs_arr,top_n=10):
