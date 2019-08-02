@@ -3,7 +3,7 @@ import json
 
 from app import app
 
-dummy_data = {'drug_section': 'SD15', 'drug_text': 'heroin'}
+dummy_data = {'drug_text': 'heroin'}
 
 class TestCase(unittest.TestCase):
 
@@ -16,14 +16,12 @@ class TestCase(unittest.TestCase):
         data = json.loads(response.get_data(as_text=True))
         submitted_data = data['submitted_data']
         assert 'drug_text' in submitted_data
-        assert 'drug_section' in submitted_data
 
     def test_submitted_data_json(self):
         response = self.app.post('/drug-predict/', data=json.dumps(dummy_data), content_type='application/json')
         data = json.loads(response.get_data(as_text=True))
         submitted_data = data['submitted_data']
         assert 'drug_text' in submitted_data
-        assert 'drug_section' in submitted_data
 
     def test_description(self):
         response = self.app.post('/drug-predict/', data=dummy_data)
@@ -59,13 +57,10 @@ class TestCase(unittest.TestCase):
     def test_bad_request(self):
         response = self.app.post('/drug-predict/', data={})
         data = json.loads(response.get_data(as_text=True))
-        assert data == {'error' : 'Data missing drug_section or drug_text variables'}
+        assert data == {'error' : 'Data missing drug_text variable'}
 
     def test_warning(self):
-        fake_course = {
-            'drug_section':'LS01',
-            'drug_text':'relaxation brownies'
-            }
+        fake_course = {'drug_text':'relaxation brownies'}
         response = self.app.post('/drug-predict/', data=fake_course)
         data = json.loads(response.get_data(as_text=True))
         warning = data['info']['warning']

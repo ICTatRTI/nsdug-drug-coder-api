@@ -43,10 +43,9 @@ def course_predict():
         request_type = "form"
         request_data = request.form
 
-    no_drug_type = not 'drug_section' in request_data
     no_drug_text = not 'drug_text' in request_data
-    if not request_data or (no_drug_type or no_drug_text):
-        bad_request_response = {'error' : 'Data missing drug_section or drug_text variables', 'request_type': request_type}
+    if not request_data or no_drug_text:
+        bad_request_response = {'error' : 'Data missing drug_text variable', 'request_type': request_type}
         return jsonify(bad_request_response)
 
     # Get number of predictions to return
@@ -55,19 +54,10 @@ def course_predict():
     else:
         top_n = request_data['prediction_count']
 
-    drug_section = request_data['drug_section']
     drug_text = request_data['drug_text']
 
-    # NOTE: We need to be able to handle the case where TX21 and TX36 (or other combinations of inputs) are specified.
-    drug_section = drug_section.split(',')
-
-    # Make sure drug section is an actual drug section
-    for section in drug_section:
-        if section not in DRUG_SECTIONS:
-            bad_request_response = {'error': 'Drug section must be one of the following: {0}'.format(", ".join(DRUG_SECTIONS))}
-            return jsonify(bad_request_response)
-
-    processed_input = x_input(drug_section, drug_text)
+    # Convert user text to token alphabet used by model
+    processed_input = x_input(drug_text)
     tokenized_input = text_processor.process([processed_input])
 
     predictions = model.predict_proba(tokenized_input) # probability for every y
@@ -84,7 +74,7 @@ def course_predict():
                 'p': p,
                 'p_rank' : i + 1}
         predictions_formatted.append(p_fmt)
-    submitted_data =  {'drug_section': drug_section,'drug_text': drug_text,'prediction_count':top_n}
+    submitted_data =  {'drug_text': drug_text,'prediction_count':top_n}
 
     warning = None
 

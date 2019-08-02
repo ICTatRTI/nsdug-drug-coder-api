@@ -11,12 +11,12 @@ The API is available through a docker container.
 3. Test with curl:
 
  ```bash
- curl -d '{"drug_section":"SD15", "drug_text":"heroin"}' -H "Content-Type: application/json" -X POST http://localhost:8080/drug-predict/
+ curl -d '{"drug_text":"heroin"}' -H "Content-Type: application/json" -X POST http://localhost:8080/drug-predict/
  ```
 
 4. You can also specify the number of predictions to return:
 ```bash
- curl -d '{"drug_section":"SD15", "drug_text":"heroin", "prediction_count":25}' -H "Content-Type: application/json" -X POST http://localhost:8080/drug-predict/
+ curl -d '{"drug_text":"heroin", "prediction_count":25}' -H "Content-Type: application/json" -X POST http://localhost:8080/drug-predict/
  ```
 
 ## Response Structure
@@ -26,8 +26,7 @@ The API is available through a docker container.
     'description' : 'This description',
     'submitted_data' : {
         'structure' : {
-            'drug_section' : 'The drug response section submitted',
-            'drug_text' : 'The drug response text submitted',
+            'drug_text' : 'Text description of drug',
             'prediction_count' : 'Optional. The number of predictions to return (default=10)'
         }
     },
@@ -42,7 +41,7 @@ The API is available through a docker container.
         'structure' : {
             'sc_code': 'predicted SC drug code',
             'code_id': 'ID of code for lookup. Can be ignored. For internal documentation',
-            'code_definition': 'Definition of Code from documentation',
+            'code_definition': 'Definition of SC Code from documentation',
             'p': 'predicted probability of code given course number and course title',
             'p_rank' : 'Rank of prediction (1 is most likely)'
         }

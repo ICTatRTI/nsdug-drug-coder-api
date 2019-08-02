@@ -92,10 +92,7 @@ class TextProcessor(object):
 
 text_processor = TextProcessor(tokenizer, token_index, ngram_range=ngram_range, maxlen=maxlen)
 
-def x_input(sections, text):
-    if sections is not None:
-        formatted_input = ' '.join([str(section).upper() for section in sections])
-        return ' '.join([formatted_input, str(text).lower()])
+def x_input(text):
     return str(text).lower()
 
 def top_n_probabilities(probs_arr,top_n=10):
@@ -106,8 +103,7 @@ response_description = {
     'description' : 'This description',
     'submitted_data' : {
         'structure' : {
-            'drug_section' : 'The drug response section submitted',
-            'drug_text' : 'The drug response text submitted',
+            'drug_text' : 'Text description of drug',
             'prediction_count' : 'Optional. The number of predictions to return (default=10)'
         }
     },
@@ -122,7 +118,7 @@ response_description = {
         'structure' : {
             'sc_code': 'predicted SC drug code',
             'code_id': 'ID of code for lookup. Can be ignored. For internal documentation',
-            'code_definition': 'Definition of Code from documentation',
+            'code_definition': 'Definition of SC Code from documentation',
             'p': 'predicted probability of code given course number and course title',
             'p_rank' : 'Rank of prediction (1 is most likely)'
         }
