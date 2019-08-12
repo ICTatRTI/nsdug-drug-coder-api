@@ -3,28 +3,11 @@
   <div class="row">
     <div class="col s6 offset-s3 card-panel">
       <h5>Drug Input</h5>
-      <p>Input a drug name and select a section.</p>
-      <div class="input-field col s6">
+      <p>Input a drug name.</p>
+      <div class="input-field col s12">
         <p>
           <label for="drug-text">Drug Text</label>
           <input id="drug-text" type="text" v-model="drugText">
-        </p>
-      </div>
-      <div class="input-field col s6">
-        <p>
-          <label for="drug-section">Drug Section</label>
-          <select id="drug-section" v-model="drugSection">
-            <option value="" disabled default>Please Select A Section</option>
-            <option value="IN01">Inhalant</option>
-            <option value="LS01">Hallucinogen</option>
-            <option value="PYROT">Pain Reliever</option>
-            <option value="STYOT">Stimulant</option>
-            <option value="SVYOT">Sedative</option>
-            <option value="TRYOT">Tranquilizer</option>
-            <option value="SD02">Cough/Cold Medicine</option>
-            <option value="SD15">Injected Drug</option>
-            <option value="TX21,TX36">Other Drug Type</option>
-          </select>
         </p>
       </div>
     </div>

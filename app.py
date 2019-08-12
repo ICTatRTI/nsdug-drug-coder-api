@@ -3,8 +3,6 @@ from helpers import (x_input, text_processor, code_lookup, code_descriptions, lo
 from time import time
 from flask_cors import cross_origin
 
-DRUG_SECTIONS = ["IN01", "LS01", "PYROT", "STYOT", "SVYOT", "TRYOT", "SD02", "SD15", "TX21", "TX36"]
-
 # Load model into memory
 
 model = load_model()
