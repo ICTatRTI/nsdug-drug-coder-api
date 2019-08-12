@@ -2,7 +2,6 @@ var watchExampleVM = new Vue({
     el: '#app',
     data: {
       drugText: null,
-      drugSection: null,
       predictions: 'Awaiting input...',
     },
     created: function () {
@@ -22,14 +21,13 @@ var watchExampleVM = new Vue({
     },
     methods: {
       getPredictions: _.debounce(function () {
-        if (!this.drugText || !this.drugSection) {
+        if (!this.drugText) {
           this.predictions = 'Awaiting input...'
           return
         }
 
         var vm = this
         axios.post('/drug-predict/', {
-          drug_section: this.drugSection,
           drug_text: this.drugText
         })
           .then(function (response) {
