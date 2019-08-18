@@ -3,6 +3,7 @@ var watchExampleVM = new Vue({
     data: {
       drugText: null,
       predictions: 'Awaiting input...',
+      moleculeId: ''
     },
     created: function () {
       document.addEventListener('DOMContentLoaded', function() {
@@ -11,10 +12,12 @@ var watchExampleVM = new Vue({
     },
     watch: {
       drugText: function () {
+        this.moleculeId = ''
         this.predictions = 'Waiting for you to stop typing...'
         this.getPredictions()
       },
       drugSection: function () {
+        this.moleculeId = ''
         this.predictions = 'Waiting for you to stop typing...'
         this.getPredictions()
       }
@@ -27,11 +30,13 @@ var watchExampleVM = new Vue({
         }
 
         var vm = this
+        this.moleculeId = ''
         axios.post('/drug-predict/', {
           drug_text: this.drugText
         })
           .then(function (response) {
             vm.predictions = response.data.predictions.slice(0, 10);
+            vm.moleculeId = response.data.moleculeId ? response.data.moleculeId : ''
           })
           .catch(function (error) {
             vm.predictions = 'Error! Could not reach the API. ' + error
