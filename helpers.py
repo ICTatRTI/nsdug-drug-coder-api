@@ -4,6 +4,7 @@ from sklearn.externals import joblib
 from keras.models import model_from_json
 import numpy as np
 from keras.preprocessing import sequence
+from SPARQLWrapper import SPARQLWrapper, JSON
 
 # Set parameters:
 model_path = Path('./model/')
@@ -124,3 +125,40 @@ response_description = {
         }
     }
 }
+
+def wiki_lookup(drug_name):
+    sparql = SPARQLWrapper("https://query.wikidata.org/bigdata/namespace/wdq/sparql",
+                           agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36")  # Needed to avoid getting a 403
+    sparql.setQuery(f"""
+        SELECT distinct ?moleculeName ?molecule ?exactMatch ?article
+        (GROUP_CONCAT(DISTINCT(?altLabel); separator = ", ") AS ?altLabel_list)
+        WHERE {{
+            VALUES
+                ?types {{ wd:Q12140 wd:Q11173 }}
+                ?molecule  wdt:P31 ?types
+                ; rdfs:label ?moleculeName filter (lang(?moleculeName) = "en") .
+            OPTIONAL {{
+                ?molecule skos:altLabel ?altLabel .
+                FILTER (lang(?altLabel) = "en") .
+            }}
+            BIND(IF(regex(?moleculeName, "^{drug_name}$") , 0,1) AS ?exactMatch) .
+            FILTER ( CONTAINS(LCASE(?moleculeName), "{drug_name}") || CONTAINS(?altLabel, "{drug_name}")) .
+
+            #get the URL
+            OPTIONAL {{
+                ?article schema:about ?molecule .
+                ?article schema:isPartOf <https://en.wikipedia.org/>.
+            }}
+        }}
+        GROUP BY ?moleculeName ?molecule ?exactMatch ?article
+        ORDER BY ?exactMatch
+        LIMIT 1
+    """)
+    sparql.setReturnFormat(JSON)
+    results = sparql.query().convert()
+
+    if len(results['results']['bindings']):
+        url = results['results']['bindings'][0]['article']['value']
+        return url.split('/')[-1]
+
+    return ''

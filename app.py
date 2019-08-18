@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request, abort, redirect, render_template
-from helpers import (x_input, text_processor, code_lookup, code_descriptions, load_model, response_description, top_n_probabilities)
+from helpers import (x_input, text_processor, code_lookup, code_descriptions, load_model, response_description, top_n_probabilities, wiki_lookup)
 from time import time
 from flask_cors import cross_origin
 
@@ -64,6 +64,7 @@ def course_predict():
     p_values = [float(predictions[0][idx]) for idx in sorted_pred_idx]
     predicted_codes = zip(sorted_pred_idx, drug_codes,p_values)
 
+    moleculeId = ''
     predictions_formatted = []
     for i, (code_id, code, p) in enumerate(predicted_codes):
         p_fmt = {'sc_code': code,
@@ -71,13 +72,16 @@ def course_predict():
                 'code_definition': code_descriptions.get(code, "Unknown code"),
                 'p': p,
                 'p_rank' : i + 1}
+
         predictions_formatted.append(p_fmt)
     submitted_data =  {'drug_text': drug_text,'prediction_count':top_n}
 
+    moleculeId = wiki_lookup(drug_text)
     warning = None
 
     if max(pred['p'] for pred in predictions_formatted) <= 0.4:
         warning = "Max prediction less than 0.4, model is uncertain about this course prediction"
+
 
     time_elapsed = time() - start_time
 
@@ -92,5 +96,8 @@ def course_predict():
         'info' : info,
         'predictions': predictions_formatted
     }
+
+    if moleculeId:
+        response['moleculeId'] = moleculeId
 
     return jsonify(response)
