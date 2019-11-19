@@ -76,7 +76,8 @@ def course_predict():
         predictions_formatted.append(p_fmt)
     submitted_data =  {'drug_text': drug_text,'prediction_count':top_n}
 
-    moleculeId = wiki_lookup(drug_text)
+    if request_data.get('ui', False):
+        moleculeId = wiki_lookup(drug_text)
     warning = None
 
     if max(pred['p'] for pred in predictions_formatted) <= 0.4:

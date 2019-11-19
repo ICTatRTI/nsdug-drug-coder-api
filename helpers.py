@@ -158,7 +158,8 @@ def wiki_lookup(drug_name):
     results = sparql.query().convert()
 
     if len(results['results']['bindings']):
-        url = results['results']['bindings'][0]['article']['value']
-        return url.split('/')[-1]
+        if 'article' in results['results']['bindings'][0]:
+            url = results['results']['bindings'][0]['article']['value']
+            return url.split('/')[-1]
 
     return ''

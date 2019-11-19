@@ -32,7 +32,8 @@ var watchExampleVM = new Vue({
         var vm = this
         this.moleculeId = ''
         axios.post('/drug-predict/', {
-          drug_text: this.drugText
+          drug_text: this.drugText,
+          ui: true
         })
           .then(function (response) {
             vm.predictions = response.data.predictions.slice(0, 10);
